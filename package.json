@@ -1,11 +1,12 @@
 {
-  "name": "pranav-website",
+  "name": "pranav-f1-theme-portfolio",
   "private": true,
-  "description": "Static personal website. Node dependencies are development and browser-test tools only.",
+  "description": "Interactive F1-themed portfolio for Pranav Kondapaneni featuring real-time Eulerian fluid simulation and 3D car rendering.",
   "scripts": {
     "test": "node tests/site.cjs",
     "build:three": "node tools/build_three.mjs",
-    "serve": "python3 tools/serve.py"
+    "serve": "node tools/serve.cjs",
+    "serve:py": "python3 tools/serve.py"
   },
   "devDependencies": {
     "esbuild": "0.28.2",

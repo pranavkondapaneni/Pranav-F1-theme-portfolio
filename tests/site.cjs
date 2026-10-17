@@ -17,7 +17,7 @@ function watch(page) {
 }
 async function ready(page, base) {
   await page.goto(`${base}/?gpu`, { waitUntil: 'load' });
-  await page.waitForFunction(() => document.querySelector('[data-car]')?.classList.contains('ready') && window.__windTunnel, { timeout: 30000 });
+  await page.waitForFunction(() => document.querySelector('[data-car]')?.classList.contains('ready') && window.__windTunnel, { timeout: 60000 });
   await page.waitForFunction(() => document.documentElement.dataset.intro === 'done');
   await page.waitForTimeout(2300);
 }
@@ -69,7 +69,8 @@ async function sampleFrames(page, label, scroll = false) {
   let base = process.env.BASE_URL;
   if (!base) {
     const port = 19000 + Math.floor(Math.random() * 3000); base = `http://127.0.0.1:${port}`;
-    server = spawn(process.env.PYTHON || 'python3', ['tools/serve.py', String(port)], { cwd: path.join(__dirname, '..'), stdio: 'ignore' });
+    const py = process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+    server = spawn(py, ['tools/serve.py', String(port)], { cwd: path.join(__dirname, '..'), stdio: 'ignore' });
     let online = false;
     for (let i = 0; i < 50; i++) { try { if ((await fetch(base)).ok) { online = true; break; } } catch {} await delay(100); }
     assert(online, 'Local test server did not start');

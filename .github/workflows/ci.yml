@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Build & Code Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate JavaScript Syntax
+        run: |
+          node --check main.js
+          node --check car.js
+          node --check metal.js
+          node --check windtunnel.js
+          node --check tools/serve.cjs
+          node --check tools/build_three.mjs
+
+      - name: Verify Three.js bundle compilation
+        run: npm run build:three

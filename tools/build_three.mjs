@@ -9,10 +9,11 @@
 // specifier at the bundle, so car.js keeps its normal three.js imports.
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 import { build } from 'esbuild';
 
-const ROOT = path.dirname(path.dirname(new URL(import.meta.url).pathname));
+const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const src = fs.readFileSync(path.join(ROOT, 'car.js'), 'utf8');
 const core = [...new Set([...src.matchAll(/THREE\.([A-Za-z0-9_]+)/g)].map(m => m[1]))].sort();
 const addons = [...src.matchAll(/import \{([^}]+)\} from 'three\/addons\/([^']+)'/g)].map(m => [m[1].trim(), m[2]]);
